@@ -12,6 +12,7 @@ What this setup does (done **once**, by me):
 - set kernel
 - install packages
 - export environment to `environment.yml`
+- add git/gitHub repo
 
 In a separate script:
 
@@ -83,4 +84,56 @@ conda env create -f ~/Python/Code-Review/environment.yml
 
 And thereafter run `conda activate zas-python-reproducible-example` whenever I open the project again.
 
+## Initialize git and add a remote
+
+Here we assume you have git installed, have a GitHub account, and have authorisation rights to your GitHub repo on your machine.
+
+### Initialise git
+
+If this project doesn't have git set up yet, initialize it:
+
+```bash
+git init
+```
+
+Add a `.gitignore` if you haven't already, so things like your conda environment or data files aren't tracked:
+
+```bash
+echo "*.ipynb_checkpoints/" >> .gitignore
+echo "__pycache__/" >> .gitignore
+```
+
+Stage and commit your initial files:
+
+```bash
+git add .
+git commit -m "Initial commit"
+```
+
+### Add remote repo
+
+Create a remote repository on GitHub first, either through the website or with the GitHub CLI, then link it as the remote:
+
+```bash
+git remote add origin https://github.com/username/repo-name.git
+```
+
+Confirm the remote was added correctly:
+
+```bash
+git remote -v
+```
+
+Push your local commits to the remote for the first time:
+
+```bash
+git branch -M main
+git push -u origin main
+```
+
+After this first push, future updates just need:
+
+```bash
+git push
+```
 
