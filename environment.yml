@@ -1,0 +1,10 @@
+name: zas-python-reproducible-example
+channels:
+  - defaults
+dependencies:
+  - python=3.11
+  - ipykernel
+  - numpy
+  - pandas
+prefix: 
+  C:\Users\Palleschi\AppData\Local\miniconda3\envs\zas-python-reproducible-example
