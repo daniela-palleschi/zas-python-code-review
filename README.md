@@ -9,6 +9,7 @@ This project is a minimal example of a reproducible Python project.
   - `01-data_simulation.ipynb`
   - `02-analysis.ipynb` —> **run this one after activating the environment**
 - `environment.yml` use this to set up the environment (see below)
+- `setup.sh` one-command setup script (creates the environment and registers the Jupyter kernel)
 - `README.md` this file
 - `SETUP.md` documentation of how this project was set up
 - `.here`: empty file marking the project root for `pyprojroot::here()`
@@ -18,6 +19,18 @@ This project is a minimal example of a reproducible Python project.
 This project uses a conda environment defined in `environment.yml`. You do not need to create this environment from scratch, it has already been built and exported for you. See `SETUP.md` for details on how the environment was originally created (for reference only, you do not need to follow those steps).
 
 ### First time setup (do this once)
+
+Run `setup.sh` or follow these steps manually.
+
+**Option A: run `setup.sh`**
+
+```bash
+bash setup.sh
+```
+
+This creates the conda environment from `environment.yml` and registers it as a Jupyter kernel in one step.
+
+**Option B: follow these steps manually**
 
 When you first download or clone this project, create the environment from the provided `environment.yml` file (adding any necessary filepath from your current wd to `environment.yml`; e.g., `~/Python/zas-python-code-review/environment.yml`):
 
@@ -34,6 +47,12 @@ conda activate zas-python-reproducible-example
 ```
 
 (Replace `zas-python-reproducible-example` with whatever the environment is actually named in `environment.yml`, if different. You can check the name at the top of that file, or by running `conda env list` after creation.)
+
+Then register it as a Jupyter kernel (this step is not automatic, even after installing `ipykernel`):
+
+```bash
+python -m ipykernel install --user --name zas-python-reproducible-example --display-name "Python (zas-python-reproducible-example)"
+```
 
 ### Setting the interpreter and kernel in VS Code
 
@@ -63,16 +82,23 @@ If `conda env create -f environment.yml` fails partway through, or you want to s
 conda env remove --name zas-python-reproducible-example
 ```
 
-then re-run the create command.
+then re-run the create command (or re-run `setup.sh`).
 
 > **Note: Jupyter kernel not appearing for this environment**
 >
-> If you've created the conda environment from `environment.yml` but don't see it as a kernel option in Jupyter or VS Code, this is usually because `ipykernel` isn't registered as a Jupyter kernel, having the package installed isn't enough on its own.
+> Registration isn't always needed — some setups (e.g. VS Code auto-registering on first notebook use, or installing the full `jupyter`/`jupyterlab` package) handle this for you automatically. It can also differ across machines even from the same `environment.yml`, since `--from-history` only exports packages you explicitly told conda to install.
 >
-> Fix:
+> **Check first:**
 > ```bash
 > conda activate <env_name>
-> conda install ipykernel   # if not already installed
+> conda list ipykernel       # confirm ipykernel is present
+> jupyter kernelspec list    # confirm this env is registered as a kernel
+> ```
+> If `ipykernel` isn't installed, run `conda install ipykernel`. If the environment isn't in the kernelspec list, it needs registering.
+>
+> **Fix:**
+> ```bash
+> conda activate <env_name>
 > python -m ipykernel install --user --name <env_name> --display-name "Python (<env_name>)"
 > ```
 >

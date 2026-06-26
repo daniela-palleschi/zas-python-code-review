@@ -31,11 +31,15 @@ Anybody who wants to test the reproducibility of this project should:
 
 - **NOT** follow the steps below to create a new environment from scratch
 - instead, run:
-
+  ```bash
+  bash setup.sh
+  ```
+  or, to do it manually:
   ```bash
   conda env create -f environment.yml
+  conda activate zas-python-reproducible-example
+  python -m ipykernel install --user --name zas-python-reproducible-example --display-name "Python (zas-python-reproducible-example)"
   ```
-
 - then run the other script(s) as described above
 
 ## Create and activate conda environment
@@ -93,6 +97,54 @@ conda env create -f ~/Python/Code-Review/environment.yml
 
 And thereafter run `conda activate zas-python-reproducible-example` whenever I open the project again.
 
+## Jupyter kernel registration
+
+Creating the environment and installing `ipykernel` does **not** always automatically register it as a Jupyter kernel — this is sometimes a separate, explicit step.
+
+**You don't always need to do this manually.** Some setups (e.g. VS Code auto-registering on first notebook use, or installing the full `jupyter`/`jupyterlab` package rather than just `ipykernel`) register the kernel for you automatically. Whether this happens can also differ across machines, even from the same `environment.yml` — `--from-history` only exports packages you explicitly asked conda to install, so if `ipykernel` was pulled in indirectly on one machine, it may be missing from the export and not get installed at all on another.
+
+**To check whether it's needed:**
+
+```bash
+conda activate zas-python-reproducible-example
+conda list ipykernel
+jupyter kernelspec list
+```
+
+- If `ipykernel` isn't listed at all, install it first: `conda install ipykernel`
+- If the environment doesn't appear in `jupyter kernelspec list`, it needs registering
+
+**To fix it:**
+
+```bash
+conda activate zas-python-reproducible-example
+python -m ipykernel install --user --name zas-python-reproducible-example --display-name "Python (zas-python-reproducible-example)"
+```
+
+Confirm it registered:
+
+```bash
+jupyter kernelspec list
+```
+
+### VS Code
+
+If the kernel doesn't appear, reload the window (`Cmd+Shift+P` → "Developer: Reload Window") and manually select it from the kernel picker (it doesn't switch automatically).
+
+### Troubleshooting
+
+If multiple conda environments are active on your system, check which one is actually active with `conda env list` (look for the `*`), not the shell prompt text. Leftover environment installs can leave a stale prefix in your prompt that doesn't reflect the real active environment.
+
+## `setup.sh`
+
+The steps above (`env` creation + kernel registration) are bundled into `setup.sh` so a fresh clone can be set up with one command:
+
+```bash
+bash setup.sh
+```
+
+See `setup.sh` for the exact commands it runs.
+
 ## Initialize git and add a remote
 
 Here we assume you have git installed, have a GitHub account, and have authorisation rights to your GitHub repo on your machine.
@@ -145,4 +197,3 @@ After this first push, future updates just need:
 ```bash
 git push
 ```
-
