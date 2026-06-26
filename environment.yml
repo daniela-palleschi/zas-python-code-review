@@ -1,10 +1,11 @@
 name: zas-python-reproducible-example
 channels:
+  - conda-forge
   - defaults
 dependencies:
-  - python=3.11
   - ipykernel
   - numpy
+  - python=3.11
   - pandas
-prefix: 
-  C:\Users\Palleschi\AppData\Local\miniconda3\envs\zas-python-reproducible-example
+  - pyprojroot
+prefix: /Users/danielapalleschi/miniconda3/envs/zas-python-reproducible-example

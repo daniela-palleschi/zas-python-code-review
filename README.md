@@ -11,6 +11,7 @@ This project is a minimal example of a reproducible Python project.
 - `environment.yml` use this to set up the environment (see below)
 - `README.md` this file
 - `SETUP.md` documentation of how this project was set up
+- `.here`: empty file marking the project root for `pyprojroot::here()`
 
 ## Environment setup
 
@@ -59,7 +60,25 @@ If VS Code already has the right interpreter and kernel selected from before, yo
 If `conda env create -f environment.yml` fails partway through, or you want to start fresh, remove the partially created environment first:
 
 ```bash
-conda env remove --name zas-python-wg
+conda env remove --name zas-python-reproducible-example
 ```
 
 then re-run the create command.
+
+> **Note: Jupyter kernel not appearing for this environment**
+>
+> If you've created the conda environment from `environment.yml` but don't see it as a kernel option in Jupyter or VS Code, this is usually because `ipykernel` isn't registered as a Jupyter kernel, having the package installed isn't enough on its own.
+>
+> Fix:
+> ```bash
+> conda activate <env_name>
+> conda install ipykernel   # if not already installed
+> python -m ipykernel install --user --name <env_name> --display-name "Python (<env_name>)"
+> ```
+>
+> Then confirm it's registered:
+> ```bash
+> jupyter kernelspec list
+> ```
+>
+> In VS Code, you may also need to reload the window (Cmd/Ctrl+Shift+P → "Developer: Reload Window") and manually select the new kernel from the kernel picker.

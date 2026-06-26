@@ -11,6 +11,7 @@ What this setup does (done **once**, by me):
 - set interpreter
 - set kernel
 - install packages
+- add `.here` project root marker
 - export environment to `environment.yml`
 - add git/gitHub repo
 
@@ -57,6 +58,14 @@ conda env list
 ```bash
 conda install pandas numpy
 ```
+
+## Add `.here` project root marker
+
+```bash
+touch .here
+```
+
+This creates an empty file marking the project root for `pyprojroot`'s `here()` function, so file paths resolve correctly regardless of which subdirectory a script is run from.
 
 ## Export environment
 
